@@ -136,10 +136,10 @@ firewall_rules_set()
 cat > /usr/local/etc/ipfw.rules << ENDDOC
 #!/bin/sh
 EPAIR=\$(/sbin/ifconfig -l | tr " " "\n" | /usr/bin/grep epair)
-ipfw -q -f flush
-ipfw -q nat 1 config if \${EPAIR}
-ipfw -q add nat 1 all from ${nat_network_cidr} to any out via \${EPAIR}
-ipfw -q add nat 1 all from any to any in via \${EPAIR}
+ipfw -f flush
+ipfw nat 1 config if \${EPAIR}
+ipfw add nat 1 all from ${nat_network_cidr} to any out via \${EPAIR}
+ipfw add nat 1 all from any to any in via \${EPAIR}
 
 TUN=\$(/sbin/ifconfig -l | tr " " "\n" | /usr/bin/grep tun)
 #  ifconfig \${TUN} name tun0
@@ -148,14 +148,14 @@ ENDDOC
 services_enable()
 {
   sysrc -f /etc/rc.conf openvpn_enable="YES"
-  #sysrc -f /etc/rc.conf openvpn_if="tun"
+  sysrc -f /etc/rc.conf openvpn_if="tun"
   sysrc -f /etc/rc.conf openvpn_configfile="${openvpn_conf}"
   sysrc -f /etc/rc.conf openvpn_dir="${etc_openvpn}/"
-  #sysrc -f /etc/rc.conf cloned_interfaces="tun"
-  #sysrc -f /etc/rc.conf gateway_enable="YES"
-  #sysctl net.inet.ip.forwarding=1
-  #sysrc -f /etc/rc.conf firewall_enable="YES"
-  #sysrc -f /etc/rc.conf firewall_script="/usr/local/etc/ipfw.rules"
+  sysrc -f /etc/rc.conf cloned_interfaces="tun"
+  sysrc -f /etc/rc.conf gateway_enable="YES"
+  sysctl net.inet.ip.forwarding=1
+  sysrc -f /etc/rc.conf firewall_enable="YES"
+  sysrc -f /etc/rc.conf firewall_script="/usr/local/etc/ipfw.rules"
 }
 openvpn_running()
 {
@@ -173,8 +173,10 @@ openvpn_running()
 }
 services_start()
 {
+  echo "Starting openvpn"
   service openvpn start
-  #service ipfw start
+  echo "Starting ipfw"
+  service ipfw start
   openvpn_running
 }
 services_stop()
@@ -246,7 +248,7 @@ build_server()
   openvpn_config_init
   openvpn_config_set
 
-  #firewall_rules_set
+  firewall_rules_set
 
   services_enable
   
