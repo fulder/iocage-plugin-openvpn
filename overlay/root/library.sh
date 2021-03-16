@@ -155,7 +155,7 @@ services_enable()
   sysrc -f /etc/rc.conf gateway_enable="YES"
   sysctl net.inet.ip.forwarding=1
   sysrc -f /etc/rc.conf firewall_enable="YES"
-  sysrc -f /etc/rc.conf firewall_script="/usr/local/etc/ipfw.rules"
+  #sysrc -f /etc/rc.conf firewall_script="/usr/local/etc/ipfw.rules"
 }
 openvpn_running()
 {
@@ -246,7 +246,7 @@ build_server()
   openvpn_config_init
   openvpn_config_set
 
-  firewall_rules_set
+  #firewall_rules_set
 
   services_enable
   
