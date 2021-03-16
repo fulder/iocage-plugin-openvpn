@@ -148,13 +148,13 @@ ENDDOC
 services_enable()
 {
   sysrc -f /etc/rc.conf openvpn_enable="YES"
-  sysrc -f /etc/rc.conf openvpn_if="tun"
+  #sysrc -f /etc/rc.conf openvpn_if="tun"
   sysrc -f /etc/rc.conf openvpn_configfile="${openvpn_conf}"
   sysrc -f /etc/rc.conf openvpn_dir="${etc_openvpn}/"
-  sysrc -f /etc/rc.conf cloned_interfaces="tun"
-  sysrc -f /etc/rc.conf gateway_enable="YES"
-  sysctl net.inet.ip.forwarding=1
-  sysrc -f /etc/rc.conf firewall_enable="YES"
+  #sysrc -f /etc/rc.conf cloned_interfaces="tun"
+  #sysrc -f /etc/rc.conf gateway_enable="YES"
+  #sysctl net.inet.ip.forwarding=1
+  #sysrc -f /etc/rc.conf firewall_enable="YES"
   #sysrc -f /etc/rc.conf firewall_script="/usr/local/etc/ipfw.rules"
 }
 openvpn_running()
@@ -174,7 +174,7 @@ openvpn_running()
 services_start()
 {
   service openvpn start
-  service ipfw start
+  #service ipfw start
   openvpn_running
 }
 services_stop()
